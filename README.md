@@ -10,6 +10,8 @@ Sito statico pronto per GitHub Pages con report ore, timbri per reparto, moduli 
 - Elicotteristi, con compagno di eagle, decollo, atterraggio e motivazione.
 - Merryweather, con rapporto protezione centrale.
 
+Nel Servizio Ufficiale puoi indicare manualmente i membri presenti all'entrata e all'uscita, oltre ad aggiungere attivita svolte libere nel rapporto.
+
 I timbri, i campi compilati e il tema Bianco/Nero vengono salvati nel browser con `localStorage`. Questo vuol dire che ogni persona mantiene i propri dati sul proprio browser/dispositivo.
 
 ## Come modificare dati e link

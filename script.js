@@ -21,7 +21,15 @@ const REPARTI_INTERNI = [
       { id: "nome", label: "Nome e cognome", type: "text", defaultValue: DEFAULT_USER },
       { id: "entrata", label: "Orario d'entrata", type: "timeText", readonly: true },
       { id: "uscita", label: "Orario d'uscita", type: "timeText", readonly: true },
+      { id: "membriEntrata", label: "Membri all'entrata", type: "text", defaultValue: "n1" },
+      { id: "membriUscita", label: "Membri all'uscita", type: "text" },
       { id: "piccoAttivita", label: "Picco di attivita durante il servizio", type: "text" },
+      {
+        id: "attivitaSvolte",
+        label: "Attivita svolte",
+        type: "textarea",
+        placeholder: "Scrivi una attivita per riga",
+      },
     ],
     template: "official",
   },
@@ -513,13 +521,21 @@ function officialLinkedServices() {
   }).map((linkedDepartment) => `> Servizio ${linkedDepartment.nome}`);
 }
 
+function officialCustomActivities(value) {
+  return String(value || "")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => (line.startsWith(">") ? line : `> ${line}`));
+}
+
 function generatedReport(department) {
   const data = formData(department);
   const records = recordsForDepartment(department.id);
   const total = formatDuration(totalDuration(records));
   const activeNow = Math.max(1, activeRecordsCount());
-  const agentiEntrata = data.agentiEntrata || activeNow;
-  const agentiUscita = data.agentiUscita || activeNow;
+  const membriEntrata = data.membriEntrata || (data.agentiEntrata ? `n${data.agentiEntrata}` : `n${activeNow}`);
+  const membriUscita = data.membriUscita || (data.agentiUscita ? `n${data.agentiUscita}` : `n${activeNow}`);
 
   if (department.template === "official") {
     return [
@@ -528,14 +544,15 @@ function generatedReport(department) {
       `Orario d'entrata: ${data.entrata || ""}`,
       `Orario d'uscita: ${data.uscita || ""}`,
       "Rapporto:",
-      `> Agenti in servizio entrata: n${agentiEntrata}`,
+      `> Agenti in servizio entrata: ${membriEntrata}`,
       ">",
       "> Disponibile in Canale Ufficiale 1 per qualsiasi quesito",
       "> Disponibile per ritiro refurtiva",
       "> Disponibile per gestione Magazzini",
       ...officialLinkedServices(),
+      ...officialCustomActivities(data.attivitaSvolte),
       ">",
-      `> Agenti in servizio uscita: ${data.uscita ? `n${agentiUscita}` : ""}`,
+      `> Agenti in servizio uscita: ${data.uscita ? membriUscita : ""}`,
       `> Picco di Attivita durante il servizio: ${data.piccoAttivita || ""}`,
     ].join("\n");
   }
@@ -734,6 +751,7 @@ function createRecord(department) {
   data[department.startField] = formatClock(now);
   if (department.id === "servizio-ufficiale") {
     data.agentiEntrata = String(activeRecordsCount() + 1);
+    data.membriEntrata = `n${activeRecordsCount() + 1}`;
   }
 
   state.records.push({
@@ -750,6 +768,7 @@ function closeRecord(department, record) {
   data[department.endField] = formatClock(now);
   if (department.id === "servizio-ufficiale") {
     data.agentiUscita = String(Math.max(1, activeRecordsCount()));
+    data.membriUscita = `n${Math.max(1, activeRecordsCount())}`;
   }
   record.end = now.toISOString();
 }
