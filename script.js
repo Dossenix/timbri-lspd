@@ -486,6 +486,33 @@ function fieldValue(department, fieldId) {
   return formData(department)[fieldId] || "";
 }
 
+function latestRecordForDepartment(departmentId) {
+  return recordsForDepartment(departmentId).sort(
+    (a, b) => new Date(b.start).getTime() - new Date(a.start).getTime()
+  )[0];
+}
+
+function recordsOverlap(first, second, now = new Date()) {
+  const firstStart = new Date(first.start).getTime();
+  const firstEnd = first.end ? new Date(first.end).getTime() : now.getTime();
+  const secondStart = new Date(second.start).getTime();
+  const secondEnd = second.end ? new Date(second.end).getTime() : now.getTime();
+  return firstStart <= secondEnd && secondStart <= firstEnd;
+}
+
+function officialLinkedServices() {
+  const officialRecord = latestRecordForDepartment("servizio-ufficiale");
+  if (!officialRecord) return [];
+
+  const now = new Date();
+  return REPARTI_INTERNI.filter((linkedDepartment) => {
+    if (linkedDepartment.id === "servizio-ufficiale") return false;
+    return recordsForDepartment(linkedDepartment.id).some((record) =>
+      recordsOverlap(officialRecord, record, now)
+    );
+  }).map((linkedDepartment) => `> Servizio ${linkedDepartment.nome}`);
+}
+
 function generatedReport(department) {
   const data = formData(department);
   const records = recordsForDepartment(department.id);
@@ -506,6 +533,7 @@ function generatedReport(department) {
       "> Disponibile in Canale Ufficiale 1 per qualsiasi quesito",
       "> Disponibile per ritiro refurtiva",
       "> Disponibile per gestione Magazzini",
+      ...officialLinkedServices(),
       ">",
       `> Agenti in servizio uscita: ${data.uscita ? `n${agentiUscita}` : ""}`,
       `> Picco di Attivita durante il servizio: ${data.piccoAttivita || ""}`,
