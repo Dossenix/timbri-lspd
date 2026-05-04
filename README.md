@@ -1,168 +1,34 @@
-<!doctype html>
-<html lang="it">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Registro Timbri LSPD</title>
-    <meta
-      name="description"
-      content="Registro LSPD per timbri, report ore e moduli reparto copiabili."
-    />
-    <link rel="icon" href="assets/lspd-timbri-mark.svg" type="image/svg+xml" />
-    <script>
-      (() => {
-        try {
-          const theme = localStorage.getItem("lspd-timbri-theme-v1") || "light";
-          document.documentElement.dataset.theme = theme === "dark" ? "dark" : "light";
-        } catch {
-          document.documentElement.dataset.theme = "light";
-        }
-      })();
-    </script>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="app-shell">
-      <header class="topbar">
-        <a class="brand" href="#" aria-label="Registro Timbri LSPD">
-          <img
-            src="assets/lspd-timbri-mark.svg"
-            width="44"
-            height="44"
-            alt=""
-            class="brand-mark"
-          />
-          <span>
-            <strong>Registro Timbri</strong>
-            <small>LSPD internal desk</small>
-          </span>
-        </a>
+# Registro Timbri LSPD
 
-        <nav class="top-actions" aria-label="Link principali">
-          <a class="ghost-button" href="#report">
-            <span class="icon" data-icon="report" aria-hidden="true"></span>
-            Report
-          </a>
-          <a class="ghost-button" href="#reparti">
-            <span class="icon" data-icon="building" aria-hidden="true"></span>
-            Reparti
-          </a>
-          <a class="ghost-button" href="#moduli">
-            <span class="icon" data-icon="grid" aria-hidden="true"></span>
-            Moduli
-          </a>
-          <a class="ghost-button" href="#invio">
-            <span class="icon" data-icon="send" aria-hidden="true"></span>
-            Invio
-          </a>
-          <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false">
-            <span class="icon" data-icon="moon" aria-hidden="true"></span>
-            <span id="theme-label">Nero</span>
-          </button>
-        </nav>
-      </header>
+Sito statico pronto per GitHub Pages con report ore, timbri per reparto, moduli copiabili e download del report in formato `.txt`.
 
-      <main>
-        <section class="workspace" aria-labelledby="page-title">
-          <div class="workspace-heading">
-            <div>
-              <p class="eyebrow">Area amministrativa</p>
-              <h1 id="page-title">Timbri e moduli reparto</h1>
-            </div>
-            <p class="today" id="today-label"></p>
-          </div>
+## Reparti configurati
 
-          <section class="report-panel" id="report" aria-labelledby="report-title">
-            <div class="panel-head">
-              <div>
-                <p class="eyebrow">Report generale</p>
-                <h2 id="report-title">Ore registrate</h2>
-              </div>
-              <div class="panel-actions">
-                <button class="secondary-link" id="download-report" type="button">
-                  <span class="icon" data-icon="download" aria-hidden="true"></span>
-                  Scarica report
-                </button>
-                <span class="counter" id="last-update">Aggiornamento live</span>
-              </div>
-            </div>
+- Servizio Ufficiale, con rapporto per Grado di Ufficiale.
+- Coordinamento, con rapporto totale orario servizio.
+- Assunzioni, con colloqui eseguiti e formazioni.
+- Elicotteristi, con compagno di eagle, decollo, atterraggio e motivazione.
+- Merryweather, con rapporto protezione centrale.
 
-            <div class="report-grid" aria-label="Riepilogo ore">
-              <article class="report-card">
-                <span class="report-label">Ore totali</span>
-                <strong id="total-hours">0m</strong>
-              </article>
-              <article class="report-card">
-                <span class="report-label">Ore oggi</span>
-                <strong id="today-hours">0m</strong>
-              </article>
-              <article class="report-card">
-                <span class="report-label">Timbri aperti</span>
-                <strong id="open-stamps">0</strong>
-              </article>
-              <article class="report-card">
-                <span class="report-label">Reparto principale</span>
-                <strong id="top-department">-</strong>
-              </article>
-            </div>
+I timbri, i campi compilati e il tema Bianco/Nero vengono salvati nel browser con `localStorage`. Questo vuol dire che ogni persona mantiene i propri dati sul proprio browser/dispositivo.
 
-            <div class="department-summary" id="department-summary"></div>
-          </section>
+## Come modificare dati e link
 
-          <section class="department-panel" id="reparti" aria-labelledby="reparti-title">
-            <div class="panel-head">
-              <div>
-                <p class="eyebrow">Divisione interna</p>
-                <h2 id="reparti-title">Reparti dove fare il timbro</h2>
-              </div>
-              <span class="counter" id="department-count">0 reparti</span>
-            </div>
+Apri `script.js` e modifica:
 
-            <div class="department-grid" id="department-grid" aria-live="polite"></div>
-          </section>
+- `REPARTI_INTERNI`: nomi reparti, campi modulo, testi e template.
+- `LINK_INVIO_RAPIDI`: link o destinazioni dove inviare i rapporti.
+- `DEFAULT_USER`: mention Discord predefinita.
 
-          <div class="lower-grid">
-            <section class="module-panel" id="moduli" aria-labelledby="moduli-title">
-              <div class="panel-head">
-                <div>
-                  <p class="eyebrow">Indice moduli</p>
-                  <h2 id="moduli-title">Moduli disponibili</h2>
-                </div>
-                <span class="counter" id="module-count">0 moduli</span>
-              </div>
+I link `url: "#"` sono segnaposto: sostituiscili con i link reali dei canali, desk o moduli.
 
-              <div class="toolbar" aria-label="Filtri moduli">
-                <label class="search-box">
-                  <span class="icon" data-icon="search" aria-hidden="true"></span>
-                  <input
-                    id="module-search"
-                    type="search"
-                    placeholder="Cerca reparto, campo o rapporto"
-                    autocomplete="off"
-                  />
-                </label>
-                <div class="filter-tabs" id="category-tabs" role="tablist" aria-label="Categorie moduli"></div>
-              </div>
+## Pubblicazione su GitHub Pages
 
-              <div class="module-grid" id="module-grid" aria-live="polite"></div>
-              <p class="empty-state" id="empty-state" hidden>Nessun modulo trovato.</p>
-            </section>
+1. Crea un repository GitHub.
+2. Carica questi file nella root del repository.
+3. Vai in `Settings` > `Pages`.
+4. In `Build and deployment`, scegli `Deploy from a branch`.
+5. Seleziona branch `main` e cartella `/root`.
+6. Salva e attendi la pubblicazione.
 
-            <aside class="send-panel" id="invio" aria-labelledby="invio-title">
-              <div class="panel-head compact">
-                <div>
-                  <p class="eyebrow">Destinazioni</p>
-                  <h2 id="invio-title">Link di invio</h2>
-                </div>
-              </div>
-
-              <div class="send-list" id="send-list"></div>
-            </aside>
-          </div>
-        </section>
-      </main>
-    </div>
-
-    <script src="script.js"></script>
-  </body>
-</html>
+Il sito funziona anche aprendo direttamente `index.html` nel browser.
