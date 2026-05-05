@@ -77,7 +77,8 @@ body {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -263,6 +264,7 @@ h3 {
 
 .report-panel,
 .department-panel,
+.instructors-panel,
 .module-panel,
 .send-panel {
   border: 1px solid rgba(214, 223, 217, 0.95);
@@ -273,6 +275,7 @@ h3 {
 
 :root[data-theme="dark"] .report-panel,
 :root[data-theme="dark"] .department-panel,
+:root[data-theme="dark"] .instructors-panel,
 :root[data-theme="dark"] .module-panel,
 :root[data-theme="dark"] .send-panel {
   border-color: var(--line);
@@ -281,12 +284,14 @@ h3 {
 
 .report-panel,
 .department-panel,
+.instructors-panel,
 .module-panel {
   padding: 18px;
 }
 
 .report-panel,
-.department-panel {
+.department-panel,
+.instructors-panel {
   margin-bottom: 18px;
 }
 
@@ -646,6 +651,7 @@ h3 {
 }
 
 .form-field input,
+.form-field select,
 .form-field textarea,
 .report-preview textarea {
   width: 100%;
@@ -658,13 +664,15 @@ h3 {
 }
 
 :root[data-theme="dark"] .form-field input,
+:root[data-theme="dark"] .form-field select,
 :root[data-theme="dark"] .form-field textarea,
 :root[data-theme="dark"] .report-preview textarea {
   background: #0a0b0a;
   color: var(--ink);
 }
 
-.form-field input {
+.form-field input,
+.form-field select {
   min-height: 42px;
   padding: 0 10px;
 }
@@ -678,6 +686,7 @@ h3 {
 }
 
 .form-field input:focus,
+.form-field select:focus,
 .form-field textarea:focus {
   border-color: var(--green);
   box-shadow: 0 0 0 3px rgba(31, 122, 97, 0.14);
@@ -736,6 +745,148 @@ h3 {
   color: var(--green-dark);
   font-weight: 780;
   white-space: nowrap;
+}
+
+.instructor-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.instructor-tools,
+.instructor-output {
+  display: grid;
+  gap: 12px;
+}
+
+.instructor-control-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.instructor-control,
+.instructor-role-card {
+  display: grid;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper-soft);
+}
+
+.instructor-control > strong,
+.instructor-role-head strong {
+  font-size: 0.94rem;
+}
+
+.instructor-action-row,
+.instructor-output-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.instructor-roster {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.instructor-role-card {
+  align-content: start;
+  min-height: 140px;
+}
+
+.instructor-role-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.instructor-role-head small {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.instructor-member-list {
+  display: grid;
+  gap: 7px;
+}
+
+.instructor-member {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  min-height: 46px;
+  padding: 8px;
+  border: 1px solid rgba(214, 223, 217, 0.75);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+
+:root[data-theme="dark"] .instructor-member {
+  border-color: var(--line);
+}
+
+.instructor-member strong,
+.instructor-member small {
+  display: block;
+}
+
+.instructor-member small {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.instructor-member-actions {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper-soft);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  border-color: rgba(31, 122, 97, 0.36);
+  background: var(--paper);
+}
+
+.icon-button.is-danger {
+  background: var(--red-soft);
+  color: var(--red);
+  border-color: rgba(161, 61, 55, 0.18);
+}
+
+.instructor-empty {
+  margin: 0;
+  padding: 11px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.hierarchy-preview textarea {
+  min-height: 430px;
+}
+
+.movements-preview textarea {
+  min-height: 210px;
 }
 
 .lower-grid {
@@ -942,6 +1093,7 @@ h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .instructor-layout,
   .department-grid,
   .module-grid {
     grid-template-columns: 1fr;
@@ -949,6 +1101,7 @@ h3 {
 }
 
 @media (max-width: 940px) {
+  .instructor-control-grid,
   .lower-grid,
   .toolbar {
     grid-template-columns: 1fr;
@@ -999,6 +1152,7 @@ h3 {
   .report-grid,
   .info-grid,
   .department-metrics,
+  .instructor-roster,
   .form-grid {
     grid-template-columns: 1fr;
   }
@@ -1006,6 +1160,8 @@ h3 {
   .department-actions,
   .module-actions,
   .send-actions,
+  .instructor-action-row,
+  .instructor-output-actions,
   .form-head {
     align-items: stretch;
     flex-direction: column;
@@ -1022,12 +1178,14 @@ h3 {
 
   .record-row,
   .department-top,
-  .module-top {
+  .module-top,
+  .instructor-member {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .record-row {
+  .record-row,
+  .instructor-member {
     grid-template-columns: 1fr;
   }
 }
