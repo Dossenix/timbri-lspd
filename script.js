@@ -1,40 +1,7 @@
 const RECORDS_KEY = "lspd-timbri-records-v2";
 const FORMS_KEY = "lspd-timbri-forms-v2";
 const THEME_KEY = "lspd-timbri-theme-v1";
-const INSTRUCTORS_KEY = "lspd-istruttori-roster-v1";
-const INSTRUCTOR_MOVEMENTS_KEY = "lspd-istruttori-movements-v1";
 const DEFAULT_USER = "<@1084580275582931044>";
-const LSPD_EMOJI = "<:LSPD:1495387705670893680>";
-const INSTRUCTOR_NOTIFY_ROLE = "<@&1495219820038459512>";
-
-const INSTRUCTOR_ROLES = [
-  { id: "supervisore", nome: "Supervisore Istruttori", discordRole: "<@&1279360766218342400>" },
-  { id: "direttore", nome: "Direttore Istruttori", discordRole: "<@&1495402199965106227>" },
-  { id: "vice-direttore", nome: "Vice Direttore Istruttori", discordRole: "<@&1071162374591098920>" },
-  { id: "coordinatore", nome: "Coordinatore Istruttori", discordRole: "<@&1097961769953144903>" },
-  { id: "istruttore-capo", nome: "Istruttore Capo", discordRole: "<@&1271822799992000604>" },
-  { id: "istruttore-esperto", nome: "Istruttore Esperto", discordRole: "<@&1082037859604779088>" },
-  { id: "istruttore", nome: "Istruttore", discordRole: "<@&1017373230648000532>" },
-  { id: "istruttore-prova", nome: "Istruttore in Prova", discordRole: "<@&1060666099076710491>" },
-];
-
-const DEFAULT_INSTRUCTORS = [
-  { id: "default-white", roleId: "supervisore", name: "White", note: "" },
-  { id: "default-londra", roleId: "supervisore", name: "Londra", note: "" },
-  { id: "default-ancona", roleId: "supervisore", name: "Ancona", note: "" },
-  { id: "default-detroit", roleId: "direttore", name: "Detroit", note: "" },
-  { id: "default-mantova", roleId: "coordinatore", name: "Mantova", note: "prova fino al giorno 19/05" },
-  { id: "default-mako", roleId: "istruttore-capo", name: "Mako", note: "" },
-  { id: "default-edo", roleId: "istruttore-capo", name: "Edo", note: "" },
-  { id: "default-phoenix", roleId: "istruttore-capo", name: "Phoenix", note: "" },
-  { id: "default-dublino", roleId: "istruttore-esperto", name: "Dublino", note: "" },
-  { id: "default-north", roleId: "istruttore-esperto", name: "North", note: "" },
-  { id: "default-tropea", roleId: "istruttore", name: "Tropea", note: "" },
-  { id: "default-cooper", roleId: "istruttore", name: "Cooper", note: "" },
-  { id: "default-marke", roleId: "istruttore", name: "Marke", note: "" },
-  { id: "default-price", roleId: "istruttore", name: "Price", note: "" },
-  { id: "default-light", roleId: "istruttore-prova", name: "Light", note: "" },
-];
 
 const REPARTI_INTERNI = [
   {
@@ -232,7 +199,6 @@ const LINK_INVIO_RAPIDI = [
 ];
 
 const ICONS = {
-  "arrow-up": `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>`,
   building: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 21h18"></path><path d="M5 21V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v16"></path><path d="M16 8h2a2 2 0 0 1 2 2v11"></path><path d="M9 7h2"></path><path d="M9 11h2"></path><path d="M9 15h2"></path></svg>`,
   clock: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>`,
   copy: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`,
@@ -248,8 +214,6 @@ const ICONS = {
   sun: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>`,
   trash: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="m19 6-1 14H6L5 6"></path><path d="M10 11v5"></path><path d="M14 11v5"></path></svg>`,
   undo: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><path d="M9 14 4 9l5-5"></path><path d="M4 9h10a6 6 0 0 1 0 12h-1"></path></svg>`,
-  "user-plus": `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M19 8v6"></path><path d="M22 11h-6"></path></svg>`,
-  users: `<svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -259,8 +223,6 @@ const state = {
   category: "Tutti",
   records: loadRecords(),
   forms: loadForms(),
-  instructors: loadInstructorRoster(),
-  instructorMovements: loadInstructorMovements(),
 };
 
 const elements = {
@@ -283,23 +245,6 @@ const elements = {
   themeLabel: $("#theme-label"),
   downloadReport: $("#download-report"),
   copyFullReport: $("#copy-full-report"),
-  instructorCount: $("#instructor-count"),
-  instructorName: $("#instructor-name"),
-  instructorRole: $("#instructor-role"),
-  instructorNote: $("#instructor-note"),
-  instructorPerson: $("#instructor-person"),
-  instructorTargetRole: $("#instructor-target-role"),
-  instructorRoster: $("#instructor-roster"),
-  instructorHierarchyOutput: $("#instructor-hierarchy-output"),
-  instructorMovementsOutput: $("#instructor-movements-output"),
-  addInstructor: $("#add-instructor"),
-  promoteInstructor: $("#promote-instructor"),
-  moveInstructor: $("#move-instructor"),
-  removeInstructor: $("#remove-instructor"),
-  copyInstructorHierarchy: $("#copy-instructor-hierarchy"),
-  copyInstructorMovements: $("#copy-instructor-movements"),
-  clearInstructorMovements: $("#clear-instructor-movements"),
-  resetInstructors: $("#reset-instructors"),
 };
 
 function loadTheme() {
@@ -356,74 +301,12 @@ function loadForms() {
   }
 }
 
-function cloneDefaultInstructorRoster() {
-  return DEFAULT_INSTRUCTORS.map((member) => ({ ...member }));
-}
-
-function normalizeInstructorMember(member, index) {
-  const role =
-    INSTRUCTOR_ROLES.find((item) => item.id === member?.roleId) ||
-    INSTRUCTOR_ROLES[INSTRUCTOR_ROLES.length - 1];
-  const name = String(member?.name || "").trim();
-  if (!name || !role) return null;
-
-  return {
-    id: member.id || `istruttore-${Date.now()}-${index}`,
-    roleId: role.id,
-    name,
-    note: String(member.note || "").trim(),
-  };
-}
-
-function loadInstructorRoster() {
-  try {
-    const raw = localStorage.getItem(INSTRUCTORS_KEY);
-    if (!raw) return cloneDefaultInstructorRoster();
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed)
-      ? parsed.map(normalizeInstructorMember).filter(Boolean)
-      : cloneDefaultInstructorRoster();
-  } catch {
-    return cloneDefaultInstructorRoster();
-  }
-}
-
-function loadInstructorMovements() {
-  try {
-    const raw = localStorage.getItem(INSTRUCTOR_MOVEMENTS_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed)
-      ? parsed
-          .filter((movement) => movement && movement.id && movement.type && movement.name)
-          .map((movement) => ({
-            id: movement.id,
-            type: movement.type,
-            name: String(movement.name || "").trim(),
-            fromRole: String(movement.fromRole || "").trim(),
-            toRole: String(movement.toRole || "").trim(),
-            note: String(movement.note || "").trim(),
-            date: movement.date || new Date().toISOString(),
-          }))
-      : [];
-  } catch {
-    return [];
-  }
-}
-
 function saveRecords() {
   localStorage.setItem(RECORDS_KEY, JSON.stringify(state.records));
 }
 
 function saveForms() {
   localStorage.setItem(FORMS_KEY, JSON.stringify(state.forms));
-}
-
-function saveInstructorRoster() {
-  localStorage.setItem(INSTRUCTORS_KEY, JSON.stringify(state.instructors));
-}
-
-function saveInstructorMovements() {
-  localStorage.setItem(INSTRUCTOR_MOVEMENTS_KEY, JSON.stringify(state.instructorMovements));
 }
 
 function escapeHtml(value) {
@@ -543,127 +426,6 @@ function formatDateTime(value) {
   }).format(new Date(value));
 }
 
-function formatInstructorDate(value = new Date()) {
-  return new Intl.DateTimeFormat("it-IT", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(new Date(value));
-}
-
-function formatInstructorDateTime(value = new Date()) {
-  return new Intl.DateTimeFormat("it-IT", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  })
-    .format(new Date(value))
-    .replace(",", "");
-}
-
-function instructorRoleById(roleId) {
-  return INSTRUCTOR_ROLES.find((role) => role.id === roleId) || INSTRUCTOR_ROLES[INSTRUCTOR_ROLES.length - 1];
-}
-
-function instructorRoleIndex(roleId) {
-  return INSTRUCTOR_ROLES.findIndex((role) => role.id === roleId);
-}
-
-function sortedInstructorMembers() {
-  return [...state.instructors].sort((first, second) => {
-    const roleDelta = instructorRoleIndex(first.roleId) - instructorRoleIndex(second.roleId);
-    if (roleDelta !== 0) return roleDelta;
-    return first.name.localeCompare(second.name, "it");
-  });
-}
-
-function instructorDisplayName(member) {
-  return member.note ? `${member.name} (${member.note})` : member.name;
-}
-
-function normalizeInstructorName(value) {
-  return String(value || "").replace(/\s+/g, " ").trim();
-}
-
-function buildInstructorHierarchy() {
-  const lines = [`# ** ${LSPD_EMOJI}  | GERARCHIA ISTRUTTORI | ${LSPD_EMOJI}  **`];
-
-  INSTRUCTOR_ROLES.forEach((role) => {
-    const members = state.instructors.filter((member) => member.roleId === role.id);
-
-    lines.push("", `## ${role.discordRole} `, "");
-
-    if (!members.length) {
-      lines.push("> *Posizione non assegnata.*");
-      return;
-    }
-
-    members.forEach((member) => {
-      lines.push(`> ${instructorDisplayName(member)}`);
-    });
-  });
-
-  lines.push("", `|| ${INSTRUCTOR_NOTIFY_ROLE} ||`, "", `_Last Update: ${formatInstructorDate()}_`);
-  return lines.join("\n");
-}
-
-function movementLine(movement) {
-  const when = formatInstructorDateTime(movement.date);
-  if (movement.type === "hire") {
-    const note = movement.note ? ` (${movement.note})` : "";
-    return `> ${when} - ${movement.name} -> ${movement.toRole}${note}`;
-  }
-  if (movement.type === "promotion") {
-    return `> ${when} - ${movement.name}: ${movement.fromRole} -> ${movement.toRole}`;
-  }
-  if (movement.type === "removal") {
-    return `> ${when} - ${movement.name} da ${movement.fromRole}`;
-  }
-  return `> ${when} - ${movement.name}: ${movement.fromRole} -> ${movement.toRole}`;
-}
-
-function buildInstructorMovementsReport() {
-  const sections = [
-    ["hire", "Assunzioni Reparto"],
-    ["promotion", "Promozioni Reparto"],
-    ["move", "Spostamenti Reparto"],
-    ["removal", "Rimozioni Reparto"],
-  ];
-  const lines = [`# ** ${LSPD_EMOJI}  | MOVIMENTI REPARTO ISTRUTTORI | ${LSPD_EMOJI}  **`];
-
-  sections.forEach(([type, title]) => {
-    const movements = state.instructorMovements.filter((movement) => movement.type === type);
-    lines.push("", `## ${title}`, "");
-
-    if (!movements.length) {
-      lines.push("> *Nessun movimento registrato.*");
-      return;
-    }
-
-    movements.forEach((movement) => {
-      lines.push(movementLine(movement));
-    });
-  });
-
-  lines.push("", `_Last Update: ${formatInstructorDate()}_`);
-  return lines.join("\n");
-}
-
-function addInstructorMovement(type, member, fromRole = "", toRole = "") {
-  state.instructorMovements.unshift({
-    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-    type,
-    name: member.name,
-    fromRole,
-    toRole,
-    note: member.note || "",
-    date: new Date().toISOString(),
-  });
-  state.instructorMovements = state.instructorMovements.slice(0, 80);
-}
-
 function isConfigured(url) {
   return Boolean(url && url !== "#");
 }
@@ -759,9 +521,6 @@ function buildDownloadReport() {
   REPARTI_INTERNI.forEach((department) => {
     lines.push("", "------------------------------", generatedReport(department));
   });
-
-  lines.push("", "------------------------------", buildInstructorHierarchy());
-  lines.push("", "------------------------------", buildInstructorMovementsReport());
 
   lines.push("", "Storico timbri");
 
@@ -1065,93 +824,6 @@ function renderDepartments() {
   }).join("");
 }
 
-function renderInstructorOptions() {
-  const currentRole = elements.instructorRole.value || "istruttore-prova";
-  const currentTarget = elements.instructorTargetRole.value || "istruttore-prova";
-  const roleOptions = INSTRUCTOR_ROLES.map(
-    (role) => `<option value="${escapeHtml(role.id)}">${escapeHtml(role.nome)}</option>`
-  ).join("");
-
-  elements.instructorRole.innerHTML = roleOptions;
-  elements.instructorRole.value = INSTRUCTOR_ROLES.some((role) => role.id === currentRole)
-    ? currentRole
-    : "istruttore-prova";
-  elements.instructorTargetRole.innerHTML = roleOptions;
-  elements.instructorTargetRole.value = INSTRUCTOR_ROLES.some((role) => role.id === currentTarget)
-    ? currentTarget
-    : "istruttore-prova";
-
-  const selectedPerson = elements.instructorPerson.value;
-  const members = sortedInstructorMembers();
-
-  if (!members.length) {
-    elements.instructorPerson.innerHTML = `<option value="">Nessuna persona</option>`;
-    return;
-  }
-
-  elements.instructorPerson.innerHTML = members
-    .map((member) => {
-      const role = instructorRoleById(member.roleId);
-      return `<option value="${escapeHtml(member.id)}">${escapeHtml(member.name)} - ${escapeHtml(role.nome)}</option>`;
-    })
-    .join("");
-
-  if (members.some((member) => member.id === selectedPerson)) {
-    elements.instructorPerson.value = selectedPerson;
-  } else {
-    elements.instructorTargetRole.value = members[0].roleId;
-  }
-}
-
-function renderInstructorRoster() {
-  elements.instructorRoster.innerHTML = INSTRUCTOR_ROLES.map((role) => {
-    const members = state.instructors.filter((member) => member.roleId === role.id);
-
-    return `<article class="instructor-role-card">
-      <div class="instructor-role-head">
-        <div>
-          <strong>${escapeHtml(role.nome)}</strong>
-          <small>${escapeHtml(role.discordRole)}</small>
-        </div>
-        <span class="badge">${members.length}</span>
-      </div>
-      <div class="instructor-member-list">
-        ${
-          members.length
-            ? members
-                .map(
-                  (member) => `<div class="instructor-member">
-                    <div>
-                      <strong>${escapeHtml(member.name)}</strong>
-                      ${member.note ? `<small>${escapeHtml(member.note)}</small>` : ""}
-                    </div>
-                    <div class="instructor-member-actions">
-                      <button class="icon-button" type="button" title="Promuovi" aria-label="Promuovi ${escapeHtml(member.name)}" data-instructor-action="promote-member" data-member-id="${escapeHtml(member.id)}">
-                        <span class="icon" aria-hidden="true">${ICONS["arrow-up"]}</span>
-                      </button>
-                      <button class="icon-button is-danger" type="button" title="Rimuovi" aria-label="Rimuovi ${escapeHtml(member.name)}" data-instructor-action="remove-member" data-member-id="${escapeHtml(member.id)}">
-                        <span class="icon" aria-hidden="true">${ICONS.trash}</span>
-                      </button>
-                    </div>
-                  </div>`
-                )
-                .join("")
-            : `<p class="instructor-empty">Posizione non assegnata.</p>`
-        }
-      </div>
-    </article>`;
-  }).join("");
-}
-
-function renderInstructors() {
-  const count = state.instructors.length;
-  elements.instructorCount.textContent = `${count} ${count === 1 ? "persona" : "persone"}`;
-  renderInstructorOptions();
-  renderInstructorRoster();
-  elements.instructorHierarchyOutput.value = buildInstructorHierarchy();
-  elements.instructorMovementsOutput.value = buildInstructorMovementsReport();
-}
-
 function renderTimeTracking() {
   renderReport();
   renderDepartments();
@@ -1250,97 +922,6 @@ function updateDepartmentField(departmentId, fieldId, value) {
   if (preview) {
     preview.value = generatedReport(department);
   }
-}
-
-function saveAndRenderInstructors() {
-  saveInstructorRoster();
-  saveInstructorMovements();
-  renderInstructors();
-}
-
-function instructorMemberById(memberId) {
-  return state.instructors.find((member) => member.id === memberId);
-}
-
-function addInstructorFromForm() {
-  const name = normalizeInstructorName(elements.instructorName.value);
-  const role = instructorRoleById(elements.instructorRole.value);
-  const note = String(elements.instructorNote.value || "").trim();
-
-  if (!name) {
-    elements.instructorName.focus();
-    return;
-  }
-
-  const existing = state.instructors.find((member) => member.name.toLowerCase() === name.toLowerCase());
-
-  if (existing) {
-    const fromRole = instructorRoleById(existing.roleId);
-    existing.roleId = role.id;
-    existing.note = note;
-    addInstructorMovement("move", existing, fromRole.nome, role.nome);
-  } else {
-    const member = {
-      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-      roleId: role.id,
-      name,
-      note,
-    };
-    state.instructors.push(member);
-    addInstructorMovement("hire", member, "", role.nome);
-  }
-
-  elements.instructorName.value = "";
-  elements.instructorNote.value = "";
-  saveAndRenderInstructors();
-}
-
-function promoteInstructorMember(memberId) {
-  const member = instructorMemberById(memberId);
-  if (!member) return;
-
-  const currentIndex = instructorRoleIndex(member.roleId);
-  if (currentIndex <= 0) return;
-
-  const fromRole = instructorRoleById(member.roleId);
-  const toRole = INSTRUCTOR_ROLES[currentIndex - 1];
-  member.roleId = toRole.id;
-  addInstructorMovement("promotion", member, fromRole.nome, toRole.nome);
-  saveAndRenderInstructors();
-}
-
-function moveInstructorMember(memberId, roleId) {
-  const member = instructorMemberById(memberId);
-  const toRole = instructorRoleById(roleId);
-  if (!member || member.roleId === toRole.id) return;
-
-  const fromRole = instructorRoleById(member.roleId);
-  member.roleId = toRole.id;
-  addInstructorMovement("move", member, fromRole.nome, toRole.nome);
-  saveAndRenderInstructors();
-}
-
-function removeInstructorMember(memberId) {
-  const member = instructorMemberById(memberId);
-  if (!member) return;
-  if (!window.confirm(`Rimuovere ${member.name} dal reparto Istruttori?`)) return;
-
-  const fromRole = instructorRoleById(member.roleId);
-  state.instructors = state.instructors.filter((item) => item.id !== memberId);
-  addInstructorMovement("removal", member, fromRole.nome, "");
-  saveAndRenderInstructors();
-}
-
-function clearInstructorMovements() {
-  if (!window.confirm("Svuotare il registro movimenti istruttori?")) return;
-  state.instructorMovements = [];
-  saveAndRenderInstructors();
-}
-
-function resetInstructorRoster() {
-  if (!window.confirm("Ripristinare la gerarchia istruttori iniziale? I movimenti restano salvati.")) return;
-  state.instructors = cloneDefaultInstructorRoster();
-  saveAndRenderInstructors();
 }
 
 async function copyText(text, button) {
@@ -1484,40 +1065,6 @@ function bindEvents() {
     updateDepartmentField(card.dataset.departmentId, control.dataset.field, control.value);
   });
 
-  elements.addInstructor.addEventListener("click", addInstructorFromForm);
-  elements.promoteInstructor.addEventListener("click", () => {
-    promoteInstructorMember(elements.instructorPerson.value);
-  });
-  elements.moveInstructor.addEventListener("click", () => {
-    moveInstructorMember(elements.instructorPerson.value, elements.instructorTargetRole.value);
-  });
-  elements.removeInstructor.addEventListener("click", () => {
-    removeInstructorMember(elements.instructorPerson.value);
-  });
-  elements.copyInstructorHierarchy.addEventListener("click", () => {
-    copyText(buildInstructorHierarchy(), elements.copyInstructorHierarchy);
-  });
-  elements.copyInstructorMovements.addEventListener("click", () => {
-    copyText(buildInstructorMovementsReport(), elements.copyInstructorMovements);
-  });
-  elements.clearInstructorMovements.addEventListener("click", clearInstructorMovements);
-  elements.resetInstructors.addEventListener("click", resetInstructorRoster);
-  elements.instructorPerson.addEventListener("change", () => {
-    const member = instructorMemberById(elements.instructorPerson.value);
-    if (member) elements.instructorTargetRole.value = member.roleId;
-  });
-  elements.instructorRoster.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-instructor-action]");
-    if (!button) return;
-
-    if (button.dataset.instructorAction === "promote-member") {
-      promoteInstructorMember(button.dataset.memberId);
-    }
-    if (button.dataset.instructorAction === "remove-member") {
-      removeInstructorMember(button.dataset.memberId);
-    }
-  });
-
   elements.search.addEventListener("input", (event) => {
     state.query = event.target.value;
     renderModules();
@@ -1542,7 +1089,6 @@ renderIconPlaceholders();
 applyTheme(loadTheme());
 renderDate();
 renderTimeTracking();
-renderInstructors();
 renderTabs();
 renderModules();
 renderSendLinks();

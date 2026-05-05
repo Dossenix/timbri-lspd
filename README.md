@@ -2,8 +2,6 @@
 
 Sito statico pronto per GitHub Pages con report ore, timbri per reparto, moduli copiabili e download del report in formato `.txt`.
 
-Include anche una pagina interna per la gerarchia Istruttori, con persone per ruolo, promozioni, assunzioni reparto, rimozioni reparto e testi copia-incollabili.
-
 ## Reparti configurati
 
 - Servizio Ufficiale, con rapporto per Grado di Ufficiale.
@@ -17,8 +15,6 @@ Nel Servizio Ufficiale puoi indicare manualmente i membri presenti all'entrata e
 
 I timbri, i campi compilati e il tema Bianco/Nero vengono salvati nel browser con `localStorage`. Questo vuol dire che ogni persona mantiene i propri dati sul proprio browser/dispositivo.
 
-Anche la gerarchia Istruttori e il registro movimenti vengono salvati nel browser con `localStorage`.
-
 Dal report generale puoi copiare o scaricare l'intero riepilogo. Ogni reparto ha anche `Pulisci modulo`, che resetta solo i campi del modulo senza cancellare le ore.
 
 ## Come modificare dati e link
@@ -27,7 +23,6 @@ Apri `script.js` e modifica:
 
 - `REPARTI_INTERNI`: nomi reparti, campi modulo, testi e template.
 - `LINK_INVIO_RAPIDI`: link o destinazioni dove inviare i rapporti.
-- `INSTRUCTOR_ROLES` e `DEFAULT_INSTRUCTORS`: ruoli Discord e gerarchia iniziale Istruttori.
 - `DEFAULT_USER`: mention Discord predefinita.
 
 I link `url: "#"` sono segnaposto: sostituiscili con i link reali dei canali, desk o moduli.

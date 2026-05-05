@@ -51,10 +51,6 @@
             <span class="icon" data-icon="grid" aria-hidden="true"></span>
             Moduli
           </a>
-          <a class="ghost-button" href="#istruttori">
-            <span class="icon" data-icon="users" aria-hidden="true"></span>
-            Istruttori
-          </a>
           <a class="ghost-button" href="#invio">
             <span class="icon" data-icon="send" aria-hidden="true"></span>
             Invio
@@ -127,105 +123,6 @@
             </div>
 
             <div class="department-grid" id="department-grid" aria-live="polite"></div>
-          </section>
-
-          <section class="instructors-panel" id="istruttori" aria-labelledby="istruttori-title">
-            <div class="panel-head">
-              <div>
-                <p class="eyebrow">Reparto istruttori</p>
-                <h2 id="istruttori-title">Gerarchia e movimenti</h2>
-              </div>
-              <div class="panel-actions">
-                <button class="secondary-link" id="copy-instructor-hierarchy" type="button">
-                  <span class="icon" data-icon="copy" aria-hidden="true"></span>
-                  Copia gerarchia
-                </button>
-                <button class="secondary-link" id="copy-instructor-movements" type="button">
-                  <span class="icon" data-icon="copy" aria-hidden="true"></span>
-                  Copia movimenti
-                </button>
-                <span class="counter" id="instructor-count">0 persone</span>
-              </div>
-            </div>
-
-            <div class="instructor-layout">
-              <div class="instructor-tools">
-                <div class="instructor-control-grid">
-                  <div class="instructor-control">
-                    <strong>Nuova persona</strong>
-                    <div class="form-grid">
-                      <label class="form-field">
-                        <span>Nome</span>
-                        <input id="instructor-name" type="text" autocomplete="off" />
-                      </label>
-                      <label class="form-field">
-                        <span>Ruolo</span>
-                        <select id="instructor-role"></select>
-                      </label>
-                      <label class="form-field form-field-wide">
-                        <span>Nota</span>
-                        <input id="instructor-note" type="text" autocomplete="off" placeholder="Esempio: prova fino al giorno 19/05" />
-                      </label>
-                    </div>
-                    <button class="stamp-button" id="add-instructor" type="button">
-                      <span class="icon" data-icon="user-plus" aria-hidden="true"></span>
-                      Assumi / aggiungi
-                    </button>
-                  </div>
-
-                  <div class="instructor-control">
-                    <strong>Gestione ruolo</strong>
-                    <div class="form-grid">
-                      <label class="form-field form-field-wide">
-                        <span>Persona</span>
-                        <select id="instructor-person"></select>
-                      </label>
-                      <label class="form-field form-field-wide">
-                        <span>Nuovo ruolo</span>
-                        <select id="instructor-target-role"></select>
-                      </label>
-                    </div>
-                    <div class="instructor-action-row">
-                      <button class="quiet-button" id="promote-instructor" type="button">
-                        <span class="icon" data-icon="arrow-up" aria-hidden="true"></span>
-                        Promuovi
-                      </button>
-                      <button class="quiet-button" id="move-instructor" type="button">
-                        <span class="icon" data-icon="file" aria-hidden="true"></span>
-                        Sposta
-                      </button>
-                      <button class="danger-button" id="remove-instructor" type="button">
-                        <span class="icon" data-icon="trash" aria-hidden="true"></span>
-                        Rimuovi
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="instructor-roster" id="instructor-roster" aria-live="polite"></div>
-              </div>
-
-              <div class="instructor-output">
-                <label class="report-preview hierarchy-preview">
-                  <span>Gerarchia copia-incollabile</span>
-                  <textarea readonly id="instructor-hierarchy-output"></textarea>
-                </label>
-                <label class="report-preview movements-preview">
-                  <span>Assunzioni, promozioni e rimozioni</span>
-                  <textarea readonly id="instructor-movements-output"></textarea>
-                </label>
-                <div class="instructor-output-actions">
-                  <button class="quiet-button" id="clear-instructor-movements" type="button">
-                    <span class="icon" data-icon="undo" aria-hidden="true"></span>
-                    Svuota movimenti
-                  </button>
-                  <button class="danger-button" id="reset-instructors" type="button">
-                    <span class="icon" data-icon="trash" aria-hidden="true"></span>
-                    Reset gerarchia
-                  </button>
-                </div>
-              </div>
-            </div>
           </section>
 
           <div class="lower-grid">
