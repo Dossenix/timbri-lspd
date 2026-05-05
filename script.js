@@ -124,6 +124,33 @@ const REPARTI_INTERNI = [
     ],
     template: "merryweather",
   },
+  {
+    id: "interforce",
+    nome: "Interforce",
+    sottotitolo: "Servizio volontario",
+    sigla: "IF",
+    categoria: "Operativo",
+    responsabile: "Referente Interforce",
+    destinazione: "Desk Interforce",
+    descrizione: "Timbro per servizio Interforce autorizzato o chiamato da un referente.",
+    startLabel: "Orario entrata",
+    endLabel: "Uscita",
+    startField: "entrata",
+    endField: "uscita",
+    fields: [
+      { id: "nomeCodice", label: "Nome in codice", type: "text", defaultValue: DEFAULT_USER },
+      { id: "entrata", label: "Orario entrata", type: "timeText", readonly: true },
+      { id: "uscita", label: "Uscita", type: "timeText", readonly: true },
+      {
+        id: "autorizzatoDa",
+        label: "Chiamati/autorizzati da",
+        type: "text",
+        placeholder: "Inserire id discord o \\",
+      },
+      { id: "motivo", label: "Motivo", type: "text", defaultValue: "servizio volontario" },
+    ],
+    template: "interforce",
+  },
 ];
 
 const LINK_INVIO_RAPIDI = [
@@ -161,6 +188,13 @@ const LINK_INVIO_RAPIDI = [
     dettaglio: "Rapporto protezione centrale e postazioni operative.",
     url: "https://discord.com/channels/959468486504095824/1495231916654329987",
     copia: "https://discord.com/channels/959468486504095824/1495231916654329987",
+  },
+  {
+    nome: "Desk Interforce",
+    reparto: "Interforce",
+    dettaglio: "Servizi volontari autorizzati o chiamati da referenti.",
+    url: "#",
+    copia: "Inserisci qui il link del desk Interforce",
   },
 ];
 
@@ -586,6 +620,18 @@ function generatedReport(department) {
       `decollo: ${data.decollo || ""}`,
       `atterraggio: ${data.atterraggio || ""}`,
       `rapporto: ${data.rapporto || ""}`,
+    ].join("\n");
+  }
+
+  if (department.template === "interforce") {
+    return [
+      "Interforce",
+      `nome in codice: ${data.nomeCodice || ""}`,
+      `orario entrata: ${data.entrata || ""}`,
+      `uscita: ${data.uscita || ""}`,
+      `totale ore: ${total}`,
+      `da chi si e stati chiamati/autorizzati: ${data.autorizzatoDa || ""}`,
+      `motivo: ${data.motivo || ""}`,
     ].join("\n");
   }
 
