@@ -15,6 +15,8 @@ Nel Servizio Ufficiale puoi indicare manualmente i membri presenti all'entrata e
 
 I timbri, i campi compilati e il tema Bianco/Nero vengono salvati nel browser con `localStorage`. Questo vuol dire che ogni persona mantiene i propri dati sul proprio browser/dispositivo.
 
+Dal report generale puoi copiare o scaricare l'intero riepilogo. Ogni reparto ha anche `Pulisci modulo`, che resetta solo i campi del modulo senza cancellare le ore.
+
 ## Come modificare dati e link
 
 Apri `script.js` e modifica:

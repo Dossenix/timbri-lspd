@@ -244,6 +244,7 @@ const elements = {
   themeToggle: $("#theme-toggle"),
   themeLabel: $("#theme-label"),
   downloadReport: $("#download-report"),
+  copyFullReport: $("#copy-full-report"),
 };
 
 function loadTheme() {
@@ -327,9 +328,16 @@ function departmentById(id) {
   return REPARTI_INTERNI.find((department) => department.id === id);
 }
 
+function defaultFormValues(department) {
+  return department.fields.reduce((values, field) => {
+    values[field.id] = field.defaultValue || "";
+    return values;
+  }, {});
+}
+
 function formData(department) {
   if (!state.forms[department.id]) {
-    state.forms[department.id] = {};
+    state.forms[department.id] = defaultFormValues(department);
   }
 
   department.fields.forEach((field) => {
@@ -685,7 +693,7 @@ function renderDepartments() {
     const stampLabel = openRecord ? `Chiudi ${department.endLabel}` : `Apri ${department.startLabel}`;
     const stampIcon = openRecord ? ICONS.stop : ICONS.play;
 
-    return `<article class="department-card ${openRecord ? "is-active" : ""}" data-department-id="${department.id}">
+    return `<article class="department-card ${openRecord ? "is-active" : ""}" id="reparto-${department.id}" data-department-id="${department.id}">
       <div class="department-top">
         <div class="department-title">
           <span class="badge ${department.categoria.toLowerCase()}">${escapeHtml(department.sigla)}</span>
@@ -743,6 +751,10 @@ function renderDepartments() {
         <button class="danger-button" type="button" data-action="reset" ${records.length ? "" : "disabled"}>
           <span class="icon" aria-hidden="true">${ICONS.undo}</span>
           Reset ore
+        </button>
+        <button class="quiet-button" type="button" data-action="reset-form">
+          <span class="icon" aria-hidden="true">${ICONS.file}</span>
+          Pulisci modulo
         </button>
       </div>
 
@@ -862,6 +874,17 @@ function resetDepartmentRecords(departmentId) {
   renderModules();
 }
 
+function resetDepartmentForm(departmentId) {
+  const department = departmentById(departmentId);
+  if (!department) return;
+  if (!window.confirm(`Pulire i campi del modulo ${department.nome}? Le ore timbrate restano salvate.`)) return;
+
+  state.forms[department.id] = defaultFormValues(department);
+  saveForms();
+  renderTimeTracking();
+  renderModules();
+}
+
 function updateDepartmentField(departmentId, fieldId, value) {
   const department = departmentById(departmentId);
   if (!department) return;
@@ -934,7 +957,7 @@ function renderModules() {
           department.fields.map((field) => field.label).join(", ")
         )}</p>
         <div class="module-actions">
-          <a class="secondary-link" href="#reparti">
+          <a class="secondary-link" href="#reparto-${department.id}">
             <span class="icon" aria-hidden="true">${ICONS.file}</span>
             Apri reparto
           </a>
@@ -983,6 +1006,9 @@ function renderSendLinks() {
 
 function bindEvents() {
   elements.downloadReport.addEventListener("click", downloadReportFile);
+  elements.copyFullReport.addEventListener("click", () => {
+    copyText(buildDownloadReport(), elements.copyFullReport);
+  });
 
   elements.themeToggle.addEventListener("click", () => {
     const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
@@ -1002,6 +1028,7 @@ function bindEvents() {
     if (action === "toggle") toggleDepartmentStamp(departmentId);
     if (action === "delete-last") deleteLastDepartmentRecord(departmentId);
     if (action === "reset") resetDepartmentRecords(departmentId);
+    if (action === "reset-form") resetDepartmentForm(departmentId);
     if (action === "copy-report" && department) copyText(generatedReport(department), button);
   });
 
