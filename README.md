@@ -9,7 +9,7 @@ Sito statico pronto per GitHub Pages con report ore, timbri per reparto, moduli 
 - Assunzioni, con colloqui eseguiti e formazioni.
 - Elicotteristi, con compagno di eagle, decollo, atterraggio e motivazione.
 - Merryweather, con rapporto protezione centrale.
-- Interforce, con autorizzazione/chiamata, motivo e totale ore automatico.
+- Interforce, con autorizzazione/chiamata, motivo e totale ore automatico contato per ogni timbro a blocchi completati di 30 minuti.
 
 Nel Servizio Ufficiale puoi indicare manualmente i membri presenti all'entrata e all'uscita, oltre ad aggiungere attivita svolte libere nel rapporto.
 

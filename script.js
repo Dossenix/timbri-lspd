@@ -368,21 +368,36 @@ function recordDuration(record, now = new Date()) {
   return Number.isFinite(duration) && duration > 0 ? duration : 0;
 }
 
-function totalDuration(records, now = new Date()) {
-  return records.reduce((total, record) => total + recordDuration(record, now), 0);
-}
-
-function todayDuration(records, now = new Date()) {
+function todayRecordDuration(record, now = new Date()) {
   const startOfToday = new Date(now);
   startOfToday.setHours(0, 0, 0, 0);
 
-  return records.reduce((total, record) => {
-    const start = new Date(record.start);
-    const end = record.end ? new Date(record.end) : now;
-    const from = Math.max(start.getTime(), startOfToday.getTime());
-    const to = Math.min(end.getTime(), now.getTime());
-    return to > from ? total + (to - from) : total;
-  }, 0);
+  const start = new Date(record.start);
+  const end = record.end ? new Date(record.end) : now;
+  const from = Math.max(start.getTime(), startOfToday.getTime());
+  const to = Math.min(end.getTime(), now.getTime());
+  return to > from ? to - from : 0;
+}
+
+function roundToCompletedHalfHours(ms) {
+  const halfHourMs = 30 * 60000;
+  return Math.floor(ms / halfHourMs) * halfHourMs;
+}
+
+function countableDuration(department, ms) {
+  return department.template === "interforce" ? roundToCompletedHalfHours(ms) : ms;
+}
+
+function recordDurationForDepartment(department, record, now = new Date()) {
+  return countableDuration(department, recordDuration(record, now));
+}
+
+function totalDurationForDepartment(department, records, now = new Date()) {
+  return records.reduce((total, record) => total + recordDurationForDepartment(department, record, now), 0);
+}
+
+function todayDurationForDepartment(department, records, now = new Date()) {
+  return records.reduce((total, record) => total + countableDuration(department, todayRecordDuration(record, now)), 0);
 }
 
 function formatDuration(ms) {
@@ -431,18 +446,20 @@ function renderReport() {
     const records = recordsForDepartment(department.id);
     return {
       department,
-      duration: totalDuration(records, now),
+      duration: totalDurationForDepartment(department, records, now),
+      today: todayDurationForDepartment(department, records, now),
       open: records.some((record) => !record.end),
     };
   });
   const grandTotal = totals.reduce((sum, item) => sum + item.duration, 0);
+  const todayTotal = totals.reduce((sum, item) => sum + item.today, 0);
   const top = totals.reduce((best, item) => (item.duration > best.duration ? item : best), {
     department: null,
     duration: 0,
   });
 
   elements.totalHours.textContent = formatDuration(grandTotal);
-  elements.todayHours.textContent = formatDuration(todayDuration(state.records, now));
+  elements.todayHours.textContent = formatDuration(todayTotal);
   elements.openStamps.textContent = String(activeRecordsCount());
   elements.topDepartment.textContent = top.department && top.duration > 0 ? top.department.sigla : "-";
   elements.lastUpdate.textContent = `Aggiornato ${formatClock(now)}`;
@@ -469,6 +486,16 @@ function exportFileName() {
 
 function buildDownloadReport() {
   const now = new Date();
+  const totals = REPARTI_INTERNI.map((department) => {
+    const records = recordsForDepartment(department.id);
+    return {
+      department,
+      duration: totalDurationForDepartment(department, records, now),
+      today: todayDurationForDepartment(department, records, now),
+    };
+  });
+  const grandTotal = totals.reduce((sum, item) => sum + item.duration, 0);
+  const todayTotal = totals.reduce((sum, item) => sum + item.today, 0);
   const lines = [
     "Registro Timbri LSPD",
     `Generato: ${new Intl.DateTimeFormat("it-IT", {
@@ -477,17 +504,16 @@ function buildDownloadReport() {
     }).format(now)}`,
     "",
     "Report generale",
-    `Ore totali: ${formatDuration(totalDuration(state.records, now))}`,
-    `Ore oggi: ${formatDuration(todayDuration(state.records, now))}`,
+    `Ore totali: ${formatDuration(grandTotal)}`,
+    `Ore oggi: ${formatDuration(todayTotal)}`,
     `Timbri aperti: ${activeRecordsCount()}`,
     "",
     "Ore per reparto",
   ];
 
-  REPARTI_INTERNI.forEach((department) => {
-    const records = recordsForDepartment(department.id);
-    const open = openRecordForDepartment(department.id) ? " aperto" : "";
-    lines.push(`- ${department.nome}: ${formatDuration(totalDuration(records, now))}${open}`);
+  totals.forEach((item) => {
+    const open = openRecordForDepartment(item.department.id) ? " aperto" : "";
+    lines.push(`- ${item.department.nome}: ${formatDuration(item.duration)}${open}`);
   });
 
   lines.push("", "Rapporti compilati");
@@ -512,7 +538,7 @@ function buildDownloadReport() {
     records.forEach((record) => {
       const end = record.end ? formatDateTime(record.end) : "aperto";
       lines.push(
-        `- ${formatDateTime(record.start)} - ${end} | ${formatDuration(recordDuration(record, now))}`
+        `- ${formatDateTime(record.start)} - ${end} | ${formatDuration(recordDurationForDepartment(department, record, now))}`
       );
     });
   });
@@ -574,7 +600,7 @@ function officialCustomActivities(value) {
 function generatedReport(department) {
   const data = formData(department);
   const records = recordsForDepartment(department.id);
-  const total = formatDuration(totalDuration(records));
+  const total = formatDuration(totalDurationForDepartment(department, records));
   const activeNow = Math.max(1, activeRecordsCount());
   const membriEntrata = data.membriEntrata || (data.agentiEntrata ? `n${data.agentiEntrata}` : `n${activeNow}`);
   const membriUscita = data.membriUscita || (data.agentiUscita ? `n${data.agentiUscita}` : `n${activeNow}`);
@@ -686,8 +712,8 @@ function renderDepartments() {
       (a, b) => new Date(b.start).getTime() - new Date(a.start).getTime()
     );
     const openRecord = records.find((record) => !record.end);
-    const duration = totalDuration(records, now);
-    const today = todayDuration(records, now);
+    const duration = totalDurationForDepartment(department, records, now);
+    const today = todayDurationForDepartment(department, records, now);
     const lastClosed = records.find((record) => record.end);
     const recentRecords = records.slice(0, 3);
     const stampLabel = openRecord ? `Chiudi ${department.endLabel}` : `Apri ${department.startLabel}`;
@@ -735,7 +761,7 @@ function renderDepartments() {
         </div>
         <div class="metric">
           <span>Aperto</span>
-          <strong>${openRecord ? formatDuration(recordDuration(openRecord, now)) : "No"}</strong>
+          <strong>${openRecord ? formatDuration(recordDurationForDepartment(department, openRecord, now)) : "No"}</strong>
         </div>
       </div>
 
@@ -950,7 +976,7 @@ function renderModules() {
             <span class="badge ${department.categoria.toLowerCase()}">${escapeHtml(department.categoria)}</span>
             <h3>${escapeHtml(department.nome)}</h3>
           </div>
-          <span class="module-hours">${formatDuration(totalDuration(records))}</span>
+          <span class="module-hours">${formatDuration(totalDurationForDepartment(department, records))}</span>
         </div>
         <p class="module-description">${escapeHtml(department.descrizione)}</p>
         <p class="module-meta"><strong>Campi:</strong> ${escapeHtml(
